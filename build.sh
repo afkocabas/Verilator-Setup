@@ -29,7 +29,7 @@ function usage() {
 # Creates .h and .cpp files
 function generateHeaders() {
   $COMPILER --cc $TOP_LEVEL_MODULE
-  echo "Top level module ${TOP_LEVEL_MODULE} compiled successfully."
+  echo "Headers generated successfully."
 }
 
 # WARN: It attempts to generate vaweforms by default.
