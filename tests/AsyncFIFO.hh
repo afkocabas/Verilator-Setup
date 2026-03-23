@@ -1,4 +1,5 @@
 #include "VAsyncFIFO.h"
+#include "verilated_vcd_c.h"
 #include <cstdint>
 #include <cstdlib>
 #include <memory>
@@ -18,6 +19,7 @@ struct FIFO_TestBench {
   // Half Periods of the signals
   const static int write_half_period = WHP;
   const static int read_half_period  = RHP;
+  std::unique_ptr<VerilatedVcdC> traceFilePointer;
 
   // Design Under Test (DUT)
   std::unique_ptr<VAsyncFIFO> fifo;
@@ -62,10 +64,24 @@ struct FIFO_TestBench {
   void expect_equal(FIFO_ITEM actual, FIFO_ITEM expected, std::string message);
   void expect_full(bool full = true);
   void expect_empty(bool empty = true);
+
+  void printFIFO();
 };
 
 // FIFO_TestBench Function Definitions
 #ifdef FIFO_TESTBENCH_IMPLEMENTATION
+
+void FIFO_TestBench::printFIFO() {
+  std::println("Simulation Time: {}\t"
+               "Write Enable: {}\t"
+               "Read Enable: {}\t"
+               "Empty Flag: {}\t"
+               "Full Flag: {}\t"
+               "Write Data: {}\t"
+               "Read Data: {}\t",
+               sim_time, fifo->write_en, fifo->read_en, fifo->empty, fifo->full, fifo->write_data, fifo->read_data);
+}
+
 FIFO_TestBench::FIFO_TestBench() {
 
   sim_time         = 0;
@@ -79,6 +95,18 @@ FIFO_TestBench::FIFO_TestBench() {
   fifo->read_en    = 0;
   fifo->write_en   = 0;
   fifo->write_data = 0;
+
+  // Open the trace event
+  Verilated::traceEverOn(true);
+
+  // Constructor a trace file
+  traceFilePointer = std::make_unique<VerilatedVcdC>();
+
+  // Associate the trace with the design under test
+  fifo->trace(traceFilePointer.get(), 99);
+
+  // Create the the vaweform file
+  traceFilePointer->open("fifo_wave.vcd");
 
   eval();
 }
@@ -129,6 +157,8 @@ void FIFO_TestBench::global_tick(int cycles) {
     if (sim_time % write_half_period == 0) toggle_write();
     if (sim_time % read_half_period == 0) toggle_read();
     eval();
+    traceFilePointer->dump(sim_time);
+    printFIFO();
 
     // Clocks
     sim_time++;
