@@ -66,10 +66,17 @@ struct FIFO_TestBench {
   void expect_empty(bool empty = true);
 
   void printFIFO();
+
+  void exit();
 };
 
 // FIFO_TestBench Function Definitions
 #ifdef FIFO_TESTBENCH_IMPLEMENTATION
+
+void FIFO_TestBench::exit() {
+  global_tick(5);
+  fifo->final();
+}
 
 void FIFO_TestBench::printFIFO() {
   std::println("Simulation Time: {}\t"
@@ -117,7 +124,7 @@ FIFO_TestBench::FIFO_TestBench() {
 inline void FIFO_TestBench::expect_equal(FIFO_ITEM actual, FIFO_ITEM expected, std::string message) {
   if (actual != expected) {
     std::println("Actual: {}, Expected: {}. {} (@ {})", actual, expected, message.c_str(), sim_time);
-    exit(1);
+    std::exit(1);
   }
 };
 inline void FIFO_TestBench::expect_full(bool full) { expect_equal(fifo->full, full, "FIFO full flag mismatch occured."); };

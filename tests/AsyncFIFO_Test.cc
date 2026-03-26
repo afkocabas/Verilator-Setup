@@ -91,5 +91,6 @@ int main(int argc, char* argv[]) {
   test_fill_until_full(fb, swf);
   test_drain_until_empty(fb);
 
+  fb.exit();
   return 0;
 }
