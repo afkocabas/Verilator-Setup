@@ -21,4 +21,14 @@ package CachePackage;
 
   parameter int WORDS_PER_CACHE_BLOCK = CACHE_BLOCK_SIZE_IN_BYTES / WORD_SIZE_IN_BYTES;
   parameter int WORD_OFFSET_BITS = $clog2(WORDS_PER_CACHE_BLOCK);
+
+  // Type Definitions
+  typedef logic [CACHE_BLOCK_SIZE_IN_BITS - 1:0] cacheblock_t;
+  typedef logic [ADDRESS_SPACE_IN_BITS -1:0] address_t;
+
+  typedef logic [OFFSET_BITS -1:0] offset_t;
+  typedef logic [INDEX_BITS -1:0] index_t;
+  typedef logic [TAG_BITS -1:0] tag_t;
+
+
 endpackage
