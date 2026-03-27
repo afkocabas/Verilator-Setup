@@ -52,4 +52,13 @@ package CachePackage;
 
   parameter int BYTE_SELECT_LSB = 0;
   parameter int BYTE_SELECT_MSB = BYTE_SELECT_BITS - 1;
+
+  // Helper function to exract the word from a cache block.
+  // Functions should be combinational.
+  // `Automatic` keyword makes the entire function full combinational, so,
+  // the variable defined inside the functions are not stored between the calls.
+  function automatic word_t getWordFromCacheBlock(cacheblock_t block, word_select_t word_select);
+    return block[word_select*WORD_SIZE_IN_BITS+:WORD_SIZE_IN_BITS];
+  endfunction
+
 endpackage

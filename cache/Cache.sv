@@ -46,10 +46,7 @@ module Cache (
       if (read_enable) begin
         if (valid[index_in] && (tag[index_in] == tag_in)) begin  // Cache hit
           is_Hit <= 1;
-          /*
-          TODO: read_data is a 32 bit word while data[index] is a cache line of 512 bits.
-            */
-          read_data <= data_block[word_select*WORD_SIZE_IN_BITS+:WORD_SIZE_IN_BITS];
+          read_data <= getWordFromCacheBlock(data_block, word_select);
         end else begin  // Cache miss.
           is_Hit <= 0;
         end
