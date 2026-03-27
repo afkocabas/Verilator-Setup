@@ -19,7 +19,7 @@ function usage() {
 
 # Creates .h and .cpp files
 function generateHeaders() {
-  $COMPILER --cc $ALL_MODULES &&
+  $COMPILER --cc $ALL_MODULES --top-module $BASE_NAME &&
     echo "[SUCCESS]: Headers generated successfully."
 }
 
