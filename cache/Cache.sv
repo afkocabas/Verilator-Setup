@@ -7,6 +7,9 @@ module Cache (
     input logic     read_enable,
     input address_t address,
 
+    input logic  write_enable,
+    input word_t write_data,
+
     output word_t read_data,
     output logic  is_Hit
 );
@@ -22,6 +25,7 @@ module Cache (
   index_t       index_in;
 
   cacheblock_t  data_block;
+  cacheblock_t  new_block;
 
   word_select_t word_select;
   // ------------------ }
@@ -57,4 +61,45 @@ module Cache (
     end
   end
 
+  always_ff @(posedge clock) begin : writing
+    if (res) begin
+      is_Hit <= '0;
+      read_data <= '0;
+      valid <= '{default: 0};
+    end else begin
+      // If write is enabled.
+      if (write_enable) begin
+        /*
+        TODO: Simplified write-miss handling.
+        On a write miss, this implementation allocates/overwrites the cache line locally,
+        clears the line, and writes only the selected word, instead of fetching the full
+        cache line from memory first.
+        */
+        if (valid[index_in]) begin
+
+          if (tag[index_in] != tag_in) begin  // Write miss, tag mismatch.
+
+            // Set meta data
+            tag[index_in]   <= tag_in;
+            valid[index_in] <= 1'b1;
+
+            // Write the word
+            data[index_in]  <= getNewBlock('0, word_select, write_data);
+
+          end else begin  // Write hit, just adjust the corresponding word.
+            data[index_in][word_select*WORD_SIZE_IN_BITS+:WORD_SIZE_IN_BITS] <= write_data;
+          end
+        end else begin  // Write miss, invalidated cache line.
+
+          // Set meta data
+          tag[index_in]   <= tag_in;
+          valid[index_in] <= 1'b1;
+
+          // Write the word
+          data[index_in]  <= getNewBlock('0, word_select, write_data);
+
+        end
+      end
+    end
+  end
 endmodule

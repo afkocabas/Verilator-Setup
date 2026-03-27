@@ -61,4 +61,10 @@ package CachePackage;
     return block[word_select*WORD_SIZE_IN_BITS+:WORD_SIZE_IN_BITS];
   endfunction
 
+  function automatic cacheblock_t getNewBlock(cacheblock_t block, word_select_t word_select,
+                                              word_t write_data);
+    block[word_select*WORD_SIZE_IN_BITS+:WORD_SIZE_IN_BITS] = write_data;
+    return block;
+  endfunction
+
 endpackage
