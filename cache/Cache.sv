@@ -69,7 +69,6 @@ module Cache (
     if (res) begin
       is_Hit <= '0;
       read_data <= '0;
-      valid <= '{default: 0};
     end else begin
       if (read_enable) begin
         if (write_enable && write_address == read_address) begin : simultaneous_read_write
@@ -86,14 +85,16 @@ module Cache (
         // Clear output signals
       end else begin
         is_Hit <= 0;
+        read_data <= '0;
       end
     end
   end
 
   always_ff @(posedge clock) begin : writing
     if (res) begin
-      is_Hit <= '0;
-      valid  <= '{default: 0};
+      valid <= '{default: 0};
+      tag   <= '{default: 0};
+      data  <= '{default: 0};
     end else begin
       // If write is enabled.
       if (write_enable) begin
