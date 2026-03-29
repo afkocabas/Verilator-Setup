@@ -1,6 +1,6 @@
-import CachePackage::*;
+import cache_pkg::*;
 
-interface cache_storage_if (
+interface cache_mem_if (
     input clk
 );
 

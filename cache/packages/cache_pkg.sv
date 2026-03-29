@@ -1,4 +1,4 @@
-package CachePackage;
+package cache_pkg;
   parameter int ADDRESS_SPACE_IN_BITS = 32;
 
   parameter int CPU_DATA_WIDTH_IN_BITS = 32;

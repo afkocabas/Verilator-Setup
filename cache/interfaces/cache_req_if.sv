@@ -1,4 +1,4 @@
-import CachePackage::*;
+import cache_pkg::*;
 
 interface cache_req_if (
     input clk

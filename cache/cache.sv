@@ -1,4 +1,4 @@
-import CachePackage::*;
+import cache_pkg::*;
 
 // Simple direct-mapped cache.
 
@@ -7,7 +7,7 @@ import CachePackage::*;
 // The cache supports simultaneous read and write operations.
 // If a read and write occur in the same cycle to the same address,
 // the write takes priority and its data is forwarded to the read output.
-module Cache (
+module cache (
     input logic rst_i,
     input logic clk_i,
     input logic read_en_i,
