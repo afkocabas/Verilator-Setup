@@ -1,13 +1,13 @@
 import cache_pkg::*;
 
 interface cache_req_if (
-    input clk
+    input clk,
+    input res
 );
 
   address_t wr_addr;
   address_t rd_addr;
 
-  logic res;
 
   logic write_en;
   logic read_en;
@@ -19,7 +19,6 @@ interface cache_req_if (
 
 
   modport master(
-      output res,
 
       output write_en,
       output read_en,
@@ -34,7 +33,6 @@ interface cache_req_if (
   );
 
   modport slave(
-      input res,
 
       input write_en,
       input read_en,

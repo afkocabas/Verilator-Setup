@@ -1,18 +1,18 @@
 import cache_pkg::*;
 
 interface cache_mem_if (
-    input clk
+    input clk,
+    input res
 );
 
-  logic        res;
 
   logic        wr_en;
   tag_t        wr_tag;
   valid_t      wr_valid;
   cacheblock_t wr_block;
-  index_t      wr_idx;
+  idx_t        wr_idx;
 
-  index_t      rd_idx;
+  idx_t        rd_idx;
 
   tag_t        tag;
   cacheblock_t block;
@@ -20,7 +20,6 @@ interface cache_mem_if (
 
 
   modport master(
-      output res,
       output wr_en,
 
       output wr_tag,
@@ -36,7 +35,6 @@ interface cache_mem_if (
   );
 
   modport slave(
-      input res,
       input wr_en,
 
       input wr_tag,
