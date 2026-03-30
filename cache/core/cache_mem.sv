@@ -1,7 +1,7 @@
 import cache_pkg::*;
 
 module cache_mem (
-    cache_mem_if.slave cntrl_if
+    cache_mem_if.slave ctrl_if
 );
 
   // Storage arrays
@@ -10,20 +10,20 @@ module cache_mem (
   valid_t      valids[NUM_OF_CACHE_LINES];
 
 
-  always_ff @(posedge clk_i) begin : rd_wr
-    if (cntrl_if.res_i) begin
+  always_ff @(posedge ctrl_if.clk) begin : rd_wr
+    if (ctrl_if.rst) begin
       tags   <= '{default: 0};
       valids <= '{default: 0};
       blocks <= '{default: 0};
     end else begin
-      if (cntrl_if.wr_en_i) begin : wr_enabled
-        tags[cntrl_if.wr_idx]   <= cntrl_if.wr_tag;
-        valids[cntrl_if.wr_idx] <= cntrl_if.wr_valid;
-        blocks[cntrl_if.wr_idx] <= cntrl_if.wr_block;
+      if (ctrl_if.wr_en) begin : wr_enabled
+        tags[ctrl_if.wr_idx]   <= ctrl_if.wr_tag;
+        valids[ctrl_if.wr_idx] <= ctrl_if.wr_valid;
+        blocks[ctrl_if.wr_idx] <= ctrl_if.wr_block;
       end
-      block_o <= blocks[cntrl_if.rd_idx];
-      valid_o <= valids[cntrl_if.rd_idx];
-      tag_o   <= tags[cntrl_if.rd_idx];
+      ctrl_if.block <= blocks[ctrl_if.rd_idx];
+      ctrl_if.valid <= valids[ctrl_if.rd_idx];
+      ctrl_if.tag   <= tags[ctrl_if.rd_idx];
     end
   end
 endmodule
