@@ -16,7 +16,7 @@ package uart_pkg;
   typedef enum {
     RX_IDLE,
     RECIEVE_START,
-    DATA_RECIEVE,
+    RECIEVE_DATA,
     RECIEVE_STOP,
     RX_WAIT_ACK
   } rx_state_t;
