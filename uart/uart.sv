@@ -20,6 +20,9 @@ module uart (
   // Rx signals
   logic rx_done_ack;
 
+  logic cfg_rx_ready_prev_q;
+  logic cfg_tx_done_prev_q;
+
   axi4lite_intf s_axil ();
 
   // Uart register block
@@ -59,12 +62,22 @@ module uart (
   );
 
 
-  always_comb begin : placeholder_comb
-
+  always_comb begin : signal_comb
+    tx_done_ack = cfg_tx_done_prev_q && !hwif_out.CFG.tx_ready.value;
+    rx_done_ack = cfg_rx_ready_prev_q && !hwif_out.CFG.rx_ready.value;
   end
 
-  always_ff @(posedge clk_i or negedge rstn_i) begin : placeholder_ff
-
+  always_ff @(posedge clk_i or negedge rstn_i) begin : signal_seq
+    if (!rstn_i) begin
+      cfg_rx_ready_prev_q <= '0;
+      cfg_tx_done_prev_q  <= '0;
+    end else begin
+      // Since there is always one assignment to the _q state registers, the
+      // _d registers would be unnecessary. That is why prev_q is directly
+      // derived from the configuration register.
+      cfg_rx_ready_prev_q <= hwif_out.CFG.rx_ready.value;
+      cfg_tx_done_prev_q  <= hwif_out.CFG.tx_done.value;
+    end
   end
 
 endmodule
