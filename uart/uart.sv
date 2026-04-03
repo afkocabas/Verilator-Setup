@@ -63,7 +63,7 @@ module uart (
 
 
   always_comb begin : signal_comb
-    tx_done_ack = cfg_tx_done_prev_q && !hwif_out.CFG.tx_ready.value;
+    tx_done_ack = cfg_tx_done_prev_q && !hwif_out.CFG.tx_done.value;
     rx_done_ack = cfg_rx_ready_prev_q && !hwif_out.CFG.rx_ready.value;
   end
 
