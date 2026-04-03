@@ -24,18 +24,18 @@ The repository includes several directories with examples.
 - Required headers can be generated manually using the veri script.
 
 ### Generate Headers
-`./veri.sh 0 andGate/AndGate.sv` 
+`./veri.sh gen andGate/AndGate.sv` 
 
 This command generates the headers into `obj_dir`. Header files can later be used to create verification suites in C++.
 
 ### Build Executable
 After creating the tests, they can be used to generate final executable using following command:
 
-`./veri.sh 1 andGate/AndGate.sv andGate/AndGate.cc`
+`./veri.sh build andGate/AndGate.sv andGate/AndGate.cc`
 
 This command generates binary executable named as `VAndGate`.
 
 ### Multiple Verilog Files
 The script also supports multiple `.sv` files. The top-level module must be provided last:
 
-`./veri.sh 1 file.sv file2.sv toplevel.sv TestSuit.cc`
+`./veri.sh build file.sv file2.sv toplevel.sv TestSuit.cc`

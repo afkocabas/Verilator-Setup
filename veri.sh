@@ -61,13 +61,13 @@ function main() {
   parseArguments "$@"
 
   case "$OPTION" in
-  0)
+  gen)
     if [[ $# < 1 ]]; then
       usage
     fi
     generateHeaders
     ;;
-  1)
+  build)
     if [[ $# < 2 ]]; then
       usage
     fi
