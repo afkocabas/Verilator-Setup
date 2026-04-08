@@ -95,7 +95,7 @@ function main() {
     ;;
   clean)
 
-    rm -rf obj_dir *.vcd
+    rm -rf obj_dir *.vcd *.jou *.log
     ;;
   help | h)
 
